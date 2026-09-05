@@ -85,20 +85,18 @@ app.post('/tasks', (req, res) => {
     });
   }
 
-  const id = tasks[tasks.length - 1].id + 1;
+  const result = db
+    .prepare('INSERT INTO tasks (title, done) VALUES (?, ?)')
+    .run(title, 0);
 
-
-  const task = {
-    id,
-    title,
-    done: false
-  };
-
-  tasks.push(task);
+  const task = db
+    .prepare('SELECT * FROM tasks WHERE id = ?')
+    .get(result.lastInsertRowid);
 
   return res.status(201).json(task);
-
 });
+
+
 
 
 app.get('/tasks/:id', (req, res) => {
