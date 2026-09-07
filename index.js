@@ -3,7 +3,12 @@ const swaggerUi = require('swagger-ui-express');
 const openapiDocument = require('./openapi.json');
 const Database = require('better-sqlite3');
 
-const db = new Database('tasks.db');
+const path = require('path');
+
+const dbPath = path.resolve('tasks.db');
+const db = new Database(dbPath);
+
+console.log('Database path:', dbPath);
 
 
 db.exec(`
@@ -26,8 +31,6 @@ if (result.count === 0) {
     insert.run('Build CRUD API', 0);
     insert.run('Create SQLite database', 0);
 }
-
-
 
 const app = express();
 const port = 3000;
